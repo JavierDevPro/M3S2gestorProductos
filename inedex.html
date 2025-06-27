@@ -7,7 +7,34 @@
     <title>Gestion</title>
 </head>
 <body>
-    
+        <header>
+
+    </header>
+    <main>
+        <section class="productGestor">
+            <!-- area para el ingreso de productos -->
+            <h2>Ingreso de productos</h2>
+            <form id="productForm">
+                <div>
+                    <label for="productName">Nombre</label>
+                    <input type="text" id="productName" >
+                </div>
+
+                <div>
+                    <label for="productPrice">Precio</label>
+                    <input type="text" id="productPrice" >
+                </div>
+
+                <button type="submit" id="saveProductBtn">Guardar</button>
+            </form>
+            <!-- area para la visualizacion de productos ya creados -->
+            <h2>Productos en stock</h2>
+            <div id="showProducts">
+            </div>
+        </section>
+    </main>
+    <footer>
+    </footer>
 </body>
     <script src="./js/gestion_datos.js"></script>
 </html>
