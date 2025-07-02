@@ -61,17 +61,23 @@ function ingresarDatos(event){
     // Limpiar formulario
     // event.target.reset();
     console.log(temporaryProductos)
+
+    event.target.reset();
+    mostrarLista();
 }
 
 const container = document.getElementById('showProducts');
-container.innerHTML = '';
 
-for(let key in temporaryProductos){
-    const prod = temporaryProductos[key];
-    const p = document.createElement('p');
-    p.textContent = `ID: ${prod.id} - ${prod.nombre} - $${prod.precio.toFixed(2)}`;
-    container.appendChild(p);
+function mostrarLista(){
+    container.innerHTML = '';
+    for(let key in temporaryProductos){
+        const prod = temporaryProductos[key];
+        const p = document.createElement('p');
+        p.textContent = `ID: ${prod.id} - ${prod.nombre} - $${prod.precio.toFixed(2)}`;
+        container.appendChild(p);
+    }
 }
+
 
 
 document.getElementById('productForm').addEventListener('submit', ingresarDatos);
