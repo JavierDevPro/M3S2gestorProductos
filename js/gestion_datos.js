@@ -1,11 +1,4 @@
 /*
-1. Almacene información de productos utilizando un objeto con las siguientes propiedades:
-    a. id (clave única del producto).
-    b. nombre (nombre del producto).
-    c. precio (valor numérico del producto).
-
-2. Convierta los datos del objeto a un Set para garantizar que no haya duplicados.
-
 3. Use un Map para agregar información adicional a cada producto (ej., categoría como clave y
     nombre del producto como valor).
 
@@ -30,6 +23,9 @@ const temporaryProductos = {
 //set que tomado de los nombres de los productos
 const uniqueNames = new Set();
 
+//map para agregar categorias
+const categorias = new Map();
+
 //funcion que valida si el producto ya se encuentra en el set por medio de la propiedad unica nombre
 function validarProductoUnico(nombreProducto) {
     if (uniqueNames.has(nombreProducto)) {
@@ -40,6 +36,13 @@ function validarProductoUnico(nombreProducto) {
     uniqueNames.add(nombreProducto);
     return true; // Se agregó correctamente
 }
+
+//funcion que obtiene las categorias
+function obtenerCategoriasSeleccionadas() {
+    const checkboxes = document.querySelectorAll('input[name="categoria"]:checked');
+    return Array.from(checkboxes).map(cb => cb.value);
+}
+
 
 // funcion que me ingresa los datos de un nuevo producto al objeto productos
 // ademas de crear automaticamente su propio id
@@ -58,9 +61,28 @@ function ingresarDatos(event){
         return;
     }
 
+    const categoriasSeleccionadas = obtenerCategoriasSeleccionadas();
+
+    if (categoriasSeleccionadas.length === 0) {
+        alert("Debe seleccionar al menos una categoría.");
+        return;
+    }
+
     const id = Object.keys(temporaryProductos).length+1;
 
-    temporaryProductos[id] = { id: id, nombre: productName, precio: productPrice };
+    temporaryProductos[id] = { id: id,
+            nombre: productName,
+            precio: productPrice,
+            categorias: categoriasSeleccionadas
+        };
+
+
+    for (const cate of categoriasSeleccionadas) {
+    if (!categorias.has(cate)) {
+            categorias.set(cate, []);
+        }
+        categorias.get(cate).push(productName);
+    }
 
     // Limpiar formulario
     event.target.reset();
@@ -70,12 +92,13 @@ function ingresarDatos(event){
 const container = document.getElementById('showProducts');
 
 // funcion que modifica el html por medio del DOM y muestra un listado con los productos y sus propiedades
+// ademas de implementar for ... in
 function mostrarLista(){
     container.innerHTML = '';
     for(let key in temporaryProductos){
         const prod = temporaryProductos[key];
         const p = document.createElement('p');
-        p.textContent = `ID: ${prod.id} - ${prod.nombre} - $${prod.precio.toFixed(2)}`;
+        p.textContent = `ID: ${prod.id} - ${prod.nombre} - $${prod.precio.toFixed(2)} - categorias:${prod.categorias}`;
         container.appendChild(p);
     }
 }
