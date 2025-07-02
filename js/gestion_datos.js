@@ -20,20 +20,17 @@ const temporaryProductos = {
     }
 };
 
-//set que tomado de los nombres de los productos
-const uniqueNames = new Set();
-
 //map para agregar categorias
 const categorias = new Map();
+//set que tomado de los nombres de los productos
+const uniqueNames = new Set();
 
 //funcion que valida si el producto ya se encuentra en el set por medio de la propiedad unica nombre
 function validarProductoUnico(nombreProducto) {
     if (uniqueNames.has(nombreProducto)) {
-        console.warn(`⚠️ El producto "${nombreProducto}" ya está registrado.`);
+        console.warn(`El producto "${nombreProducto}" ya está registrado.`);
         return false; // No se agregó
     }
-
-    uniqueNames.add(nombreProducto);
     return true; // Se agregó correctamente
 }
 
@@ -56,17 +53,19 @@ function ingresarDatos(event){
         return;
     }
 
-    if (!validarProductoUnico(productName)){
-        alert("Intente de nuevo!")
-        return;
-    }
-
     const categoriasSeleccionadas = obtenerCategoriasSeleccionadas();
 
     if (categoriasSeleccionadas.length === 0) {
         alert("Debe seleccionar al menos una categoría.");
         return;
     }
+
+    if (!validarProductoUnico(productName)){
+        alert("El producto ya fue ingresado Intente de nuevo!")
+        return;
+    }
+
+    uniqueNames.add(productName);
 
     const id = Object.keys(temporaryProductos).length+1;
 
