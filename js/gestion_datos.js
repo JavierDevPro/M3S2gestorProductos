@@ -27,23 +27,22 @@ const temporaryProductos = {
     }
 };
 
-// console.log(Object.keys(temporaryProductos)); // Muestra las claves del objeto temporaryProductos
-// console.log(temporaryProductos[4]); // Muestra el producto con id 4
-// console.log(temporaryProductos[4].nombre); // Muestra el nombre del producto con id 4
-// console.log(temporaryProductos[4].precio); // Muestra el precio del producto con id 4
+//set que tomado de los nombres de los productos
+const uniqueNames = new Set();
 
-// const uniqueProducts = new Set()
+//funcion que valida si el producto ya se encuentra en el set por medio de la propiedad unica nombre
+function validarProductoUnico(nombreProducto) {
+    if (uniqueNames.has(nombreProducto)) {
+        console.warn(`⚠️ El producto "${nombreProducto}" ya está registrado.`);
+        return false; // No se agregó
+    }
 
-// for (let producto in temporaryProductos){
-//     uniqueProducts.add(temporaryProductos[producto].nombre)
-// }
+    uniqueNames.add(nombreProducto);
+    return true; // Se agregó correctamente
+}
 
-// console.log(uniqueProducts)
-
-
-
-// console.log(productPrice)
-
+// funcion que me ingresa los datos de un nuevo producto al objeto productos
+// ademas de crear automaticamente su propio id
 function ingresarDatos(event){
     event.preventDefault(); 
     let productName = document.getElementById('productName').value.trim();
@@ -54,20 +53,23 @@ function ingresarDatos(event){
         return;
     }
 
+    if (!validarProductoUnico(productName)){
+        alert("Intente de nuevo!")
+        return;
+    }
+
     const id = Object.keys(temporaryProductos).length+1;
 
     temporaryProductos[id] = { id: id, nombre: productName, precio: productPrice };
 
     // Limpiar formulario
-    // event.target.reset();
-    console.log(temporaryProductos)
-
     event.target.reset();
     mostrarLista();
 }
 
 const container = document.getElementById('showProducts');
 
+// funcion que modifica el html por medio del DOM y muestra un listado con los productos y sus propiedades
 function mostrarLista(){
     container.innerHTML = '';
     for(let key in temporaryProductos){
@@ -81,10 +83,3 @@ function mostrarLista(){
 
 
 document.getElementById('productForm').addEventListener('submit', ingresarDatos);
-// class ProductList{
-//     constructor(numProduct, dataProduct){
-//         this.numProduct = numProduct;
-//         this.dataProduct = dataProduct;
-//     }
-// }
-
